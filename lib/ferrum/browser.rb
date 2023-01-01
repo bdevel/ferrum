@@ -102,6 +102,9 @@ module Ferrum
     #   URL for a running instance of Chrome. If this is set, a browser process
     #   will not be spawned.
     #
+    # @option options [Boolean] :new_tab (true)
+    #   Create a new browser tab. When false, reuse the active browser tab.
+    #
     # @option options [Integer] :process_timeout
     #   How long to wait for the Chrome process to respond on startup.
     #
@@ -261,6 +264,16 @@ module Ferrum
     def version
       VersionInfo.new(command("Browser.getVersion"))
     end
+
+    #
+    # Returns whether a session could create a new browser tab
+    #
+    # @return [Boolean]
+    #
+    def new_tab?
+      !!@options.new_tab
+    end
+
 
     private
 

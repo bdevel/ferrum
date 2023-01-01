@@ -16,7 +16,7 @@ module Ferrum
                   :js_errors, :base_url, :slowmo, :pending_connection_errors,
                   :url, :env, :process_timeout, :browser_name, :browser_path,
                   :save_path, :extensions, :proxy, :port, :host, :headless,
-                  :ignore_default_browser_options, :browser_options, :xvfb
+                  :ignore_default_browser_options, :browser_options, :xvfb, :new_tab
 
       def initialize(options = nil)
         @options = Hash(options&.dup)
@@ -30,6 +30,7 @@ module Ferrum
         @process_timeout = @options.fetch(:process_timeout, PROCESS_TIMEOUT)
         @browser_options = @options.fetch(:browser_options, {})
         @slowmo = @options[:slowmo].to_f
+        @new_tab = @options.fetch(:new_tab, true)
 
         @ws_max_receive_size, @env, @browser_name, @browser_path,
           @save_path, @extensions, @ignore_default_browser_options, @xvfb = @options.values_at(

@@ -176,6 +176,7 @@ Ferrum::Browser.new(options)
   * `:host` (String) - Remote debugging address for headless Chrome.
   * `:url` (String) - URL for a running instance of Chrome. If this is set, a
       browser process will not be spawned.
+  * `:new_tab` (Boolean) - When false, reuse active browser tab. To be used along with the `:url` option [Default: true].
   * `:process_timeout` (Integer) - How long to wait for the Chrome process to
       respond on startup.
   * `:ws_max_receive_size` (Integer) - How big messages to accept from Chrome
