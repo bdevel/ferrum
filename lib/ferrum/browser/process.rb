@@ -18,7 +18,7 @@ module Ferrum
 
       attr_reader :host, :port, :ws_url, :pid, :command,
                   :default_user_agent, :browser_version, :protocol_version,
-                  :v8_version, :webkit_version, :xvfb
+                  :v8_version, :webkit_version, :xvfb, :tab_target_id
 
       extend Forwardable
       delegate path: :command
@@ -67,6 +67,13 @@ module Ferrum
           response = JSON.parse(::Net::HTTP.get(url))
           self.ws_url = response["webSocketDebuggerUrl"]
           parse_browser_versions
+
+          unless options.new_tab
+            url = URI.join(options.url, "/json")
+            response = JSON.parse(::Net::HTTP.get(url))
+            @tab_target_id = response.find{|e| e["type"] == "page"}&.fetch('id')
+          end
+
           return
         end
 

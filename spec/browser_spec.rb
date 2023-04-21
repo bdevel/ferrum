@@ -128,6 +128,16 @@ describe Ferrum::Browser do
       end
     end
 
+    it "supports :new_tab argument" do
+      with_external_browser do |url|
+        browser = Ferrum::Browser.new(url: url, new_tab: false)
+        browser.go_to(base_url)
+        expect(browser.body).to include("Hello world!")
+      ensure
+        browser&.quit
+      end
+    end
+
     it "supports :host argument", skip: ENV["BROWSER_TEST_HOST"].nil? do
       # Use custom host "pointing" to localhost in /etc/hosts or iptables for this.
       # https://superuser.com/questions/516208/how-to-change-ip-address-to-point-to-localhost

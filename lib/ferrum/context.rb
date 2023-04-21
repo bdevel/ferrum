@@ -17,7 +17,7 @@ module Ferrum
     end
 
     def default_target
-      @default_target ||= create_target
+      @default_target ||= find_or_create_target
     end
 
     def page
@@ -43,6 +43,22 @@ module Ferrum
     def create_page(**options)
       target = create_target
       target.page = target.build_page(**options)
+    end
+
+    def find_or_create_target
+      return create_target if @browser.new_tab?
+
+      find_target(@browser.process.tab_target_id) || create_target
+    end
+
+    def find_target(id)
+      page_targets = @browser.command("Target.getTargets")['targetInfos'].select{|t| t['type'] == 'page'}
+      found_target = page_targets.find{|t| t['targetId'] == id}
+      return nil unless found_target
+
+      target = Target.new(@browser, found_target)
+      @targets.put_if_absent(target.id, target)
+      target
     end
 
     def create_target
